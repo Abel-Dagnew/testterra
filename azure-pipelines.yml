@@ -113,20 +113,41 @@ pool:
 
 
 steps:
-- task: TerraformCLI@0
+# Step 1: Install Terraform
+- task: Bash@3
+  displayName: 'Install Terraform'
+  inputs:
+    targetType: 'inline'
+    script: |
+      echo "Downloading Terraform..."
+      curl -o terraform.zip https://releases.hashicorp.com/terraform/1.0.11/terraform_1.0.11_linux_amd64.zip
+      echo "Unzipping Terraform..."
+      unzip terraform.zip
+      sudo mv terraform /usr/local/bin/
+      echo "Verifying Terraform Installation..."
+      terraform -version
+
+# Step 2: Terraform Init using AzureCLI@2
+- task: AzureCLI@2
   displayName: 'Terraform Init'
   inputs:
-    command: 'init'
-    workingDirectory: '$(System.DefaultWorkingDirectory)'
-    backendServiceArm: 'Abel-serviceP-conn'
-    backendConfigStorageAccountName: 'terrastate345'
-    backendConfigContainerName: 'state-cont'
-    backendConfigKey: 'terraform.tfstate'
+    azureSubscription: 'Abel-serviceP-conn'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      echo "Initializing Terraform..."
+      terraform init \
+        -backend-config="storage_account_name=terrastate345" \
+        -backend-config="container_name=state-cont" \
+        -backend-config="key=terraform.tfstate"
 
-- task: TerraformCLI@0
+# Step 3: Terraform Apply using AzureCLI@2
+- task: AzureCLI@2
   displayName: 'Terraform Apply'
   inputs:
-    command: 'apply'
-    workingDirectory: '$(System.DefaultWorkingDirectory)'
-    options: '-auto-approve'
-
+    azureSubscription: 'Abel-serviceP-conn'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      echo "Applying Terraform configuration..."
+      terraform apply -auto-approve
