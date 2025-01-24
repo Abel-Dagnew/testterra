@@ -113,18 +113,18 @@ pool:
 
 
 steps:
-- task: UseTerraform@0
+- task: TerraformCLI@0
+  displayName: 'Terraform Init'
   inputs:
     command: 'init'
     workingDirectory: '$(System.DefaultWorkingDirectory)'
     backendServiceArm: 'Abel-serviceP-conn'
-    backendConfigSub: '6d9332c5-468f-4d90-937c-4eebe6e80f41'
-    backendConfigResourceGroupName: 'abel_RG'
     backendConfigStorageAccountName: 'terrastate345'
     backendConfigContainerName: 'state-cont'
     backendConfigKey: 'terraform.tfstate'
 
-- task: UseTerraform@0
+- task: TerraformCLI@0
+  displayName: 'Terraform Apply'
   inputs:
     command: 'apply'
     workingDirectory: '$(System.DefaultWorkingDirectory)'
