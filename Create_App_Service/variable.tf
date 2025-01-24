@@ -1,6 +1,6 @@
 variable "resource_group_name" {
   type    = string
-  default = "AbelDevopsRG33"
+  default = "AbelDevRG33"
 }
 
 variable "location" {
@@ -10,10 +10,10 @@ variable "location" {
 
 variable "app_service_plan_name" {
   type    = string
-  default = "AbelASP33"
+  default = "AbelASP3366"
 }
 
 variable "app_service_name" {
   type    = string
-  default = "AbelDevops23443"
+  default = "AbelDevState"
 }

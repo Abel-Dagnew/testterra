@@ -8,8 +8,8 @@ terraform {
   }
   backend "azurerm" {
     resource_group_name  = "abel_RG"
-    storage_account_name = "terraform443"
-    container_name       = "terraform-statefile"
+    storage_account_name = "terrastate345"
+    container_name       = "state-cont"
     key                  = "terraform.tfstate"
   }
 }
